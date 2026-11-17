@@ -1,0 +1,6 @@
+/contact-book
+/contact-book.exe
+/*.obj
+/contacts.tsv
+/contacts.tsv.tmp
+/contacts.tsv.lock
