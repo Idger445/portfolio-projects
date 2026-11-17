@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Решение линейных и квадратных уравнений и график функции.">
+  <title>Решатель уравнений</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:,">
+  <script src="plot.js" defer></script>
+</head>
+<body>
+  <main class="workspace">
+    <header class="intro">
+      <h1>Решатель уравнений</h1>
+      <p>Линейные и квадратные уравнения с одной переменной.</p>
+    </header>
+
+    <div class="layout">
+      <div class="controls">
+        <form class="panel input-panel" id="equation-form">
+          <label for="equation">Уравнение</label>
+          <input id="equation" name="equation" value="x^2 - 5x + 6 = 0" maxlength="160"
+                 required spellcheck="false" autocomplete="off" aria-describedby="input-hint solve-error">
+          <p id="input-hint">Используйте x^2 или x² для квадрата.</p>
+          <button class="solve-button" type="submit">Решить и построить</button>
+          <p id="solve-error" class="error" role="alert" hidden></p>
+
+          <div class="examples">
+            <p>Примеры</p>
+            <div class="example-list">
+              <button type="button" value="2x - 4 = 0">2x − 4 = 0</button>
+              <button type="button" value="x² - 4x + 4 = 0">x² − 4x + 4 = 0</button>
+              <button type="button" value="x² + 1 = 0">x² + 1 = 0</button>
+            </div>
+          </div>
+        </form>
+
+        <section class="panel solution-panel" aria-labelledby="solution-title">
+          <h2 id="solution-title">Решение</h2>
+          <div id="solution" aria-live="polite" aria-atomic="true">
+            <p id="solution-kind">Вычисляем…</p>
+            <p id="solution-roots"></p>
+            <p id="discriminant" hidden></p>
+          </div>
+        </section>
+      </div>
+
+      <section id="graph" class="panel graph-panel" aria-labelledby="graph-title">
+        <div class="graph-header">
+          <h2 id="graph-title">График функции</h2>
+          <p id="formula"><var>y</var> = …</p>
+        </div>
+        <div class="plot">
+          <canvas id="plot" role="img" aria-label="График функции для введённого уравнения"></canvas>
+        </div>
+        <div class="graph-footer">
+          <p id="legend" hidden><span></span>Действительные корни</p>
+          <div class="zoom" aria-label="Масштаб графика" role="group">
+            <button id="zoom-out" type="button" aria-label="Уменьшить масштаб" disabled>−</button>
+            <button id="zoom-reset" type="button" aria-label="Сбросить масштаб" disabled>100%</button>
+            <button id="zoom-in" type="button" aria-label="Увеличить масштаб" disabled>+</button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <noscript>Для вывода графика нужен JavaScript.</noscript>
+  </main>
+</body>
+</html>
