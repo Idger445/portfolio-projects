@@ -1,0 +1,207 @@
+:root {
+  color-scheme: light;
+  --page: #f5f7f4;
+  --surface: #ffffff;
+  --ink: #182920;
+  --muted: #4e6156;
+  --line: #cdd8cf;
+  --accent: #176243;
+  font-family: Inter, system-ui, sans-serif;
+  line-height: 1.5;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); }
+h1, h2, p { margin: 0; }
+a { color: inherit; text-underline-offset: 0.25em; }
+:is(a, summary):focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.shell { width: min(100% - 3rem, 70rem); margin-inline: auto; }
+
+.site-header { border-block-end: 1px solid var(--line); }
+
+.header-inner, .footer-inner, nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-inner, .footer-inner { justify-content: space-between; min-height: 4.25rem; }
+nav a { font-size: 0.92rem; text-decoration: none; }
+nav a:hover { color: var(--accent); text-decoration: underline; }
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 1.4rem;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  text-decoration: none;
+}
+
+.brand-mark {
+  display: inline-block;
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 0.28rem solid var(--accent);
+  border-right-width: 0.56rem;
+  border-radius: 0.32rem;
+  transform: rotate(-8deg);
+}
+
+.pricing { padding-block: clamp(3rem, 7vw, 6rem) clamp(3rem, 6vw, 5rem); }
+.intro { margin-inline: auto; max-width: 48rem; text-align: center; }
+h1 { font-size: clamp(2.15rem, 5.9vw, 4.4rem); line-height: 1.02; letter-spacing: -0.065em; }
+.intro p { max-width: 53ch; margin: 1.2rem auto 0; color: var(--muted); font-size: clamp(1rem, 1.8vw, 1.1rem); }
+
+.billing {
+  position: relative;
+  min-inline-size: 0;
+  margin: 2rem 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.billing legend { margin-inline: auto; padding: 0; font-size: 0.84rem; color: var(--muted); }
+
+.billing-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.billing-switch {
+  display: flex;
+  width: fit-content;
+  gap: 0.25rem;
+  margin: 0.6rem auto 2rem;
+  padding: 0.25rem;
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  background: #e8eee8;
+}
+
+.billing-switch label {
+  padding: 0.52rem 0.82rem;
+  border-radius: 0.58rem;
+  font-size: 0.91rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.billing-switch label:hover { background: #dce7de; }
+.billing-switch span { color: var(--accent); font-size: 0.78rem; }
+#monthly:checked ~ .billing-switch [for="monthly"],
+#annual:checked ~ .billing-switch [for="annual"] {
+  background: var(--surface);
+  box-shadow: 0 1px 3px #17382321;
+}
+
+#monthly:focus-visible ~ .billing-switch [for="monthly"],
+#annual:focus-visible ~ .billing-switch [for="annual"] {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.annual-value,
+#annual:checked ~ .plan-grid .monthly-value { display: none; }
+#annual:checked ~ .plan-grid .annual-value { display: block; }
+
+.plan-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1rem, 2.4vw, 1.85rem);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: var(--surface);
+  animation: appear 380ms ease-out both;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.card:nth-child(2) { animation-delay: 65ms; }
+.card:nth-child(3) { animation-delay: 130ms; }
+.card:hover, .card:focus-within { border-color: var(--accent); box-shadow: 0 8px 24px #17382312; }
+@media (hover: hover) { .card:hover { transform: translateY(-0.25rem); } }
+
+.featured { border-color: #79a28a; background: #edf6ef; }
+.card h2 { font-size: 1.35rem; letter-spacing: -0.025em; }
+.audience { margin: 0.42rem 0 1.3rem; min-block-size: 3em; color: var(--muted); font-size: 0.95rem; }
+.price { font-size: 0.9rem; font-weight: 650; }
+.price strong { font-size: 2.85rem; letter-spacing: -0.075em; line-height: 1; }
+.price span, .billing-note { color: var(--muted); }
+.price span { font-weight: 400; }
+.billing-note { margin-block-start: 0.4rem; font-size: 0.82rem; }
+
+.features {
+  margin-block: 1.35rem 1.15rem;
+  padding-block-start: 1rem;
+  padding-inline-start: 1.2rem;
+  border-block-start: 1px solid var(--line);
+  font-size: 0.94rem;
+}
+
+.features li + li { margin-block-start: 0.45rem; }
+.features li::marker { color: var(--accent); }
+.plan-details { margin-block-start: auto; }
+
+summary { color: var(--accent); font-weight: 650; cursor: pointer; }
+summary:hover { text-decoration: underline; text-underline-offset: 0.22em; }
+details p { margin-block-start: 0.65rem; color: var(--muted); }
+.plan-details summary, .plan-details p { font-size: 0.88rem; }
+
+.faq {
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  border-block: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.faq-inner { display: grid; grid-template-columns: 1fr 1.55fr; gap: 1.5rem 3rem; }
+.faq h2 { font-size: clamp(1.65rem, 4vw, 2.4rem); line-height: 1.15; letter-spacing: -0.045em; }
+.faq details { padding-block: 0.9rem; border-block-start: 1px solid var(--line); }
+.faq details:last-child { border-block-end: 1px solid var(--line); }
+.footer-inner { color: var(--muted); font-size: 0.88rem; }
+.footer-inner a { white-space: nowrap; }
+
+.skip-link {
+  position: fixed;
+  inset: 0.6rem auto auto 0.6rem;
+  z-index: 1;
+  padding: 0.55rem 0.85rem;
+  background: var(--surface);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus { transform: none; }
+
+@keyframes appear {
+  from { opacity: 0; translate: 0 0.6rem; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@media (max-width: 54rem) {
+  .plan-grid { grid-template-columns: 1fr; max-width: 34rem; margin-inline: auto; }
+  .audience { min-block-size: 0; }
+}
+
+@media (max-width: 37rem) {
+  .shell { width: calc(100% - 2rem); }
+  .faq-inner { grid-template-columns: 1fr; }
+  .footer-inner { flex-wrap: wrap; gap: 0.65rem; padding-block: 0.8rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card { animation: none; transition: none; }
+  .card:hover { transform: none; }
+  .billing-switch label { transition: none; }
+}

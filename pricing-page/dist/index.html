@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Тарифы вымышленного сервиса для командной базы знаний «Свод». Учебная HTML/CSS-страница.">
+  <title>Тарифы — Свод</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">К содержанию</a>
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"></span>Свод</a>
+      <nav aria-label="Навигация по странице">
+        <a href="#plans">Тарифы</a>
+        <a href="#faq">Вопросы</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section class="pricing shell" id="plans" aria-labelledby="title">
+      <div class="intro">
+        <h1 id="title">Тарифы для вашей команды</h1>
+        <p>Храните инструкции, заметки и решения в одной базе знаний. Выберите объём и права доступа, которые подойдут вашей команде.</p>
+      </div>
+
+      <fieldset class="billing">
+        <legend>Период оплаты</legend>
+        <input class="billing-input" type="radio" id="monthly" name="billing" checked>
+        <input class="billing-input" type="radio" id="annual" name="billing">
+        <div class="billing-switch">
+          <label for="monthly">Месяц</label>
+          <label for="annual">Год <span>−20%</span></label>
+        </div>
+
+        <div class="plan-grid">
+          <article class="card" aria-labelledby="start">
+            <h2 id="start">Старт</h2>
+            <p class="audience">Для личных заметок и первых общих документов.</p>
+            <p class="price"><strong>0</strong> BYN <span>/ месяц</span></p>
+            <p class="billing-note">Бесплатно</p>
+            <ul class="features">
+              <li>До 3 участников</li>
+              <li>1 рабочее пространство</li>
+              <li>До 100 страниц</li>
+            </ul>
+            <details class="plan-details">
+              <summary>Подробнее о тарифе «Старт»</summary>
+              <p>Можно вести общую базу или держать страницы в личном пространстве. Экспорт страниц доступен в Markdown.</p>
+            </details>
+          </article>
+
+          <article class="card featured" aria-labelledby="team">
+            <h2 id="team">Команда</h2>
+            <p class="audience">Для рабочих инструкций и базы знаний отдела.</p>
+            <div class="monthly-value">
+              <p class="price"><strong>30</strong> BYN <span>/ месяц</span></p>
+              <p class="billing-note">30 BYN при оплате за месяц</p>
+            </div>
+            <div class="annual-value">
+              <p class="price"><strong>24</strong> BYN <span>/ месяц</span></p>
+              <p class="billing-note">288 BYN при оплате за год</p>
+            </div>
+            <ul class="features">
+              <li>До 15 участников</li>
+              <li>5 рабочих пространств</li>
+              <li>История версий за 90 дней</li>
+            </ul>
+            <details class="plan-details">
+              <summary>Подробнее о тарифе «Команда»</summary>
+              <p>Администраторы назначают права на уровне пространства. Авторы видят историю правок и могут восстановить предыдущую версию страницы.</p>
+            </details>
+          </article>
+
+          <article class="card" aria-labelledby="studio">
+            <h2 id="studio">Студия</h2>
+            <p class="audience">Для нескольких отделов или проектных команд.</p>
+            <div class="monthly-value">
+              <p class="price"><strong>75</strong> BYN <span>/ месяц</span></p>
+              <p class="billing-note">75 BYN при оплате за месяц</p>
+            </div>
+            <div class="annual-value">
+              <p class="price"><strong>60</strong> BYN <span>/ месяц</span></p>
+              <p class="billing-note">720 BYN при оплате за год</p>
+            </div>
+            <ul class="features">
+              <li>До 50 участников</li>
+              <li>Неограниченные пространства</li>
+              <li>Гостевой доступ к страницам</li>
+            </ul>
+            <details class="plan-details">
+              <summary>Подробнее о тарифе «Студия»</summary>
+              <p>Гостям можно дать доступ к отдельным страницам. История правок хранится без ограничения по времени.</p>
+            </details>
+          </article>
+        </div>
+      </fieldset>
+    </section>
+
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="shell faq-inner">
+        <h2 id="faq-title">Частые вопросы</h2>
+        <div>
+          <details>
+            <summary>Цена указана за человека?</summary>
+            <p>Цена указана за всё рабочее пространство в пределах лимита участников выбранного тарифа.</p>
+          </details>
+          <details>
+            <summary>Как считается оплата за год?</summary>
+            <p>В карточке показана стоимость за месяц с учётом скидки. Сумма за 12 месяцев указана под ней.</p>
+          </details>
+          <details>
+            <summary>Можно ли подключить тариф?</summary>
+            <p>«Свод» — учебный макет. Здесь можно посмотреть условия и сравнить цены.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell footer-inner">
+    <p>«Свод» — демонстрационная страница тарифов</p>
+    <a href="#top">Наверх <span aria-hidden="true">↑</span></a>
+  </footer>
+</body>
+</html>
