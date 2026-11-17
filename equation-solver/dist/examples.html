@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Примеры уравнений с ответами и правила ввода для решателя.">
+  <title>Примеры уравнений</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="data:,">
+</head>
+<body>
+  <main class="workspace">
+    <nav class="page-nav" aria-label="Страницы решателя">
+      <a href="/">Калькулятор</a>
+      <a href="/examples" aria-current="page">Примеры</a>
+    </nav>
+    <header class="intro">
+      <h1>Примеры уравнений</h1>
+      <p>Выберите пример, чтобы открыть его решение и график.</p>
+    </header>
+
+    <div class="case-grid">
+      <article class="panel equation-case">
+        <h2>Линейное</h2>
+        <a href="/?equation=2x%20%3D%204">2x = 4</a>
+        <p>Один действительный корень, x = 2.</p>
+      </article>
+      <article class="panel equation-case">
+        <h2>Квадратное с двумя корнями</h2>
+        <a href="/?equation=x%5E2%20%2D%205x%20%2B%206%20%3D%200">x² − 5x + 6 = 0</a>
+        <p>Два пересечения с осью x, в точках 2 и 3.</p>
+      </article>
+      <article class="panel equation-case">
+        <h2>Квадратное с одним корнем</h2>
+        <a href="/?equation=x%5E2%20%2D%204x%20%2B%204%20%3D%200">x² − 4x + 4 = 0</a>
+        <p>Двойной корень, x = 2. Парабола касается оси x.</p>
+      </article>
+      <article class="panel equation-case">
+        <h2>Квадратное без действительных корней</h2>
+        <a href="/?equation=x%5E2%20%2B%201%20%3D%200">x² + 1 = 0</a>
+        <p>Два комплексных корня, x = ±i. Парабола выше оси x.</p>
+      </article>
+      <article class="panel equation-case">
+        <h2>Тождество</h2>
+        <a href="/?equation=x%20%2B%202%20%3D%202%20%2B%20x">x + 2 = 2 + x</a>
+        <p>Подходит любое x. График совпадает с осью x.</p>
+      </article>
+      <article class="panel equation-case">
+        <h2>Противоречие</h2>
+        <a href="/?equation=x%20%2B%202%20%3D%20x%20%2B%203">x + 2 = x + 3</a>
+        <p>Решений нет. График проходит ниже оси x.</p>
+      </article>
+    </div>
+
+    <section class="panel syntax-panel" aria-labelledby="syntax-title">
+      <h2 id="syntax-title">Как записать уравнение</h2>
+      <ul>
+        <li>Разделяйте две части одним знаком <code>=</code>.</li>
+        <li>Используйте <code>x^2</code> или <code>x²</code> для квадрата и <code>x</code> для первой степени.</li>
+        <li>Десятичные коэффициенты можно писать через точку или запятую, например <code>1,5x</code> и <code>1.5*x</code>.</li>
+        <li>Раскройте скобки перед вводом. Максимальная степень x — 2.</li>
+      </ul>
+      <p>График показывает разность левой и правой частей. Действительные корни лежат на оси x.</p>
+    </section>
+  </main>
+</body>
+</html>

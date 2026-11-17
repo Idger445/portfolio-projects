@@ -16,13 +16,26 @@ button, input { font: inherit; }
 button { cursor: pointer; }
 button:disabled { opacity: .45; cursor: default; }
 button:focus-visible, input:focus-visible { outline: 3px solid #2d926d; outline-offset: 3px; }
+a:focus-visible { outline: 3px solid #2d926d; outline-offset: 3px; }
 p, h1, h2 { margin: 0; }
 [hidden] { display: none !important; }
 
 .workspace {
   width: min(1160px, calc(100% - 80px));
-  margin: clamp(32px, 8vw, 105px) auto 48px;
+  margin: clamp(24px, 6vw, 72px) auto 48px;
 }
+
+.page-nav { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: clamp(24px, 4vw, 44px); }
+.page-nav a {
+  color: #235541;
+  border-radius: 7px;
+  padding: 8px 12px;
+  text-decoration: none;
+  font-size: .9rem;
+  font-weight: 640;
+}
+.page-nav a:hover { background: #dce7df; }
+.page-nav a[aria-current="page"] { background: #17382b; color: #f5fbf7; }
 
 .intro { margin-bottom: clamp(24px, 5vw, 45px); }
 .intro h1 { font-size: clamp(2rem, 5.6vw, 4.6rem); font-weight: 650; letter-spacing: -.075em; line-height: 1.06; }
@@ -94,9 +107,36 @@ p, h1, h2 { margin: 0; }
 .zoom button { height: 33px; min-width: 33px; line-height: 1; padding: 0 7px; }
 #zoom-reset { min-width: 56px; font-size: .8rem; }
 
+.case-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.equation-case, .syntax-panel { padding: 23px; }
+.equation-case { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+.equation-case h2 { margin: 0; font-size: .94rem; }
+.equation-case a {
+  display: inline-block;
+  margin-top: auto;
+  padding: 7px 8px;
+  border-radius: 6px;
+  background: #eef4f0;
+  color: #176044;
+  font: .88rem var(--mono);
+  text-underline-offset: 3px;
+}
+.equation-case a:hover { background: #dcf1e7; }
+.equation-case p, .syntax-panel li, .syntax-panel p { color: var(--muted); font-size: .9rem; line-height: 1.55; }
+.syntax-panel { margin-top: 16px; }
+.syntax-panel ul { margin: 0 0 14px; padding-left: 18px; }
+.syntax-panel li + li { margin-top: 5px; }
+.syntax-panel code { font-family: var(--mono); color: #235541; }
+
 @media (max-width: 760px) {
   .workspace { width: calc(100% - 32px); }
   .layout { grid-template-columns: minmax(0, 1fr); }
   .input-panel, .solution-panel, .graph-panel { padding: 17px; }
   .plot { min-height: 280px; }
+  .case-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 520px) {
+  .case-grid { grid-template-columns: minmax(0, 1fr); }
+  .equation-case, .syntax-panel { padding: 17px; }
 }

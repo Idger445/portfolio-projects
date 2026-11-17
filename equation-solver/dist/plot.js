@@ -226,4 +226,9 @@ zoomReset.addEventListener("click", () => {
   updatePlotControls();
 });
 new ResizeObserver(drawPlot).observe(canvas);
+
+const linkedEquation = new URLSearchParams(window.location.search).get("equation")?.trim();
+if (linkedEquation && linkedEquation.length <= input.maxLength) {
+  input.value = linkedEquation;
+}
 submitEquation();

@@ -13,10 +13,15 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   margin: 0;
   background: var(--paper);
   color: var(--ink);
 }
+
+main { flex: 1; }
 
 a { color: inherit; }
 a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
@@ -63,7 +68,8 @@ h1, h2, h3, .brand { font-family: "PT Serif", Georgia, serif; }
 
 nav { display: flex; flex-wrap: wrap; gap: 0.25rem clamp(0.8rem, 4vw, 2rem); }
 nav a, .footer-inner a { text-decoration-thickness: 1px; text-underline-offset: 0.25em; }
-nav a:not(:hover), .footer-inner a:not(:hover) { text-decoration-color: transparent; }
+nav a:not(:hover):not([aria-current]), .footer-inner a:not(:hover) { text-decoration-color: transparent; }
+nav a[aria-current] { color: var(--accent); font-weight: 650; }
 
 .hero {
   display: grid;
@@ -111,18 +117,23 @@ h3 { font-size: 1.3rem; }
 
 .button:hover { background: var(--accent-hover); }
 
-.menu-section {
-  padding-block: clamp(3rem, 6vw, 5rem);
+.page-heading { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+.page-heading .intro { max-width: 46ch; margin-block-end: 0; }
+
+.tinted {
   border-block: 1px solid var(--line);
   background: #efe5d7;
 }
+
+.menu-section { padding-block: clamp(2rem, 5vw, 3.5rem); }
 
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1.75rem, 5vw, 5rem);
-  margin-block-start: 2rem;
 }
+
+.menu-grid h2 { font-size: clamp(1.8rem, 3.5vw, 2.5rem); }
 
 .menu-list { margin-block-start: 0.5rem; }
 .menu-list > div {
@@ -135,16 +146,20 @@ h3 { font-size: 1.3rem; }
 
 .menu-list small { margin-inline-start: 0.4em; color: var(--muted); }
 .menu-list dd { flex: none; font-variant-numeric: tabular-nums; font-weight: 600; }
+.menu-note { margin-block-start: 1.5rem; color: var(--muted); }
 
-.visit {
+.split {
   display: grid;
   grid-template-columns: 1fr 0.98fr;
   gap: 1.5rem clamp(2rem, 5vw, 5rem);
-  padding-block: clamp(3rem, 6vw, 5rem);
+  padding-block: clamp(2rem, 5vw, 3.5rem);
 }
 
-.visit-info p { margin-block: 0.25rem 1rem; color: var(--muted); }
-.visit-info p:last-child { margin-block-end: 0; }
+.split p { max-width: 48ch; color: var(--muted); }
+.location-note { margin-block-start: 0.8rem; }
+.text-link { display: inline-block; margin-block-start: 0.8rem; color: var(--accent); font-weight: 650; text-underline-offset: 0.25em; }
+.text-link:hover { color: var(--accent-hover); }
+.onward { padding-block: 1.15rem 1.85rem; }
 .footer-inner { font-size: 0.9rem; color: var(--muted); }
 
 .skip-link {
@@ -160,12 +175,13 @@ h3 { font-size: 1.3rem; }
 
 @media (max-width: 46rem) {
   .shell { width: min(100% - 2.5rem, 34rem); }
-  .hero, .menu-grid, .visit { grid-template-columns: 1fr; }
+  .hero, .menu-grid, .split { grid-template-columns: 1fr; }
   .hero { gap: 1.75rem; }
   .hero-image { aspect-ratio: 5 / 4; object-fit: cover; }
 }
 
 @media (max-width: 24rem) {
   .header-inner { align-items: flex-start; flex-direction: column; gap: 0.45rem; padding-block: 0.8rem; }
+  .hours > div { flex-wrap: wrap; gap: 0.25rem 1rem; }
   .footer-inner { flex-wrap: wrap; padding-block: 0.8rem; }
 }

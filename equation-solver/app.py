@@ -12,6 +12,7 @@ import re
 PUBLIC_DIR = Path(__file__).resolve().with_name("dist")
 ASSETS = {
     "/": ("index.html", "text/html; charset=utf-8"),
+    "/examples": ("examples.html", "text/html; charset=utf-8"),
     "/styles.css": ("styles.css", "text/css; charset=utf-8"),
     "/plot.js": ("plot.js", "text/javascript; charset=utf-8"),
 }
@@ -129,7 +130,7 @@ class Handler(BaseHTTPRequestHandler):
         self.send_body(status, "application/json; charset=utf-8", body)
 
     def do_GET(self):
-        asset = ASSETS.get(self.path)
+        asset = ASSETS.get(self.path.partition("?")[0])
         if asset is None:
             self.send_error(HTTPStatus.NOT_FOUND)
             return

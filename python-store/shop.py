@@ -25,12 +25,29 @@ class Product:
     details: str
     price: int
     variant: str
+    description: str
+    specifications: tuple[tuple[str, str], ...]
 
 
 CATALOG = {
-    "notebook": Product("Блокнот «Мох»", "A5 · 160 страниц в точку", 3400, "Мох"),
-    "planner": Product("Планер «Лён»", "A5 · 52 недели без дат", 4200, "Лён"),
-    "pencil": Product("Карандаш «Графит»", "Грифель HB · кедр", 650, "Графит"),
+    "notebook": Product(
+        "Блокнот «Мох»", "A5 · 160 страниц в точку", 3400, "Мох",
+        "Блокнот в зелёной тканевой обложке для заметок, схем и набросков. "
+        "Точечная разметка помогает выравнивать строки и строить таблицы.",
+        (("Формат", "A5 (148 × 210 мм)"), ("Разметка", "Точка"), ("Объём", "160 страниц")),
+    ),
+    "planner": Product(
+        "Планер «Лён»", "A5 · 52 недели без дат", 4200, "Лён",
+        "На каждом развороте есть место для дел на неделю и отдельный блок для заметок. "
+        "Даты можно проставлять по ходу работы и начинать с любой недели года.",
+        (("Формат", "A5 (148 × 210 мм)"), ("Развороты", "52 недели"), ("Обложка", "Тканевая, бежевая")),
+    ),
+    "pencil": Product(
+        "Карандаш «Графит»", "Грифель HB · кедр", 650, "Графит",
+        "Кедровый карандаш с шестигранным корпусом и грифелем средней твёрдости. "
+        "Подходит для повседневных записей и лёгких набросков.",
+        (("Твёрдость", "HB"), ("Корпус", "Шестигранный, кедр"), ("Комплектация", "1 карандаш")),
+    ),
 }
 
 
@@ -91,7 +108,10 @@ def save_order(path, token, customer, email, cart):
         return order_id
 
 
-def layout(title, content, count):
+def layout(title, content, count, current=""):
+    home_current = ' aria-current="page"' if current == "home" else ""
+    catalog_current = {"catalog": ' aria-current="page"', "product": ' aria-current="location"'}.get(current, "")
+    cart_current = ' aria-current="page"' if current == "cart" else ""
     return f"""<!doctype html>
 <html lang="ru">
 <head>
@@ -104,10 +124,10 @@ def layout(title, content, count):
 <body>
   <a class="skip-link" href="#page-content">К содержимому</a>
   <header class="site-header wrap">
-    <a class="brand" aria-label="Поле, главная" href="/">поле<span>.</span></a>
+    <a class="brand" aria-label="Поле, главная" href="/"{home_current}>поле<span>.</span></a>
     <nav aria-label="Основная навигация">
-      <a href="/#catalog">Каталог</a>
-      <a class="cart-link" href="/cart">Корзина <span class="count">{count}</span></a>
+      <a href="/catalog"{catalog_current}>Каталог</a>
+      <a class="cart-link" href="/cart"{cart_current}>Корзина <span class="count">{count}</span></a>
     </nav>
   </header>
   <main id="page-content" class="wrap">{content}</main>
@@ -116,55 +136,95 @@ def layout(title, content, count):
 </html>"""
 
 
-def catalog_page(cart, added):
-    cards = []
-    for sku, product in CATALOG.items():
-        quantity = cart.get(sku, 0)
-        action = (
-            '<a class="button secondary" href="/cart">В корзине</a>'
-            if quantity >= LIMIT
-            else f"""<form action="/cart/add" method="post">
-                <input type="hidden" name="sku" value="{sku}">
-                <button class="button secondary" aria-label="В корзину — {product.name}">В корзину</button>
-              </form>"""
-        )
-        cards.append(f"""<article class="product">
-          <div class="product-art {sku}" aria-hidden="true"><span></span></div>
-          <p class="variant">{product.variant}</p>
-          <h3>{product.name}</h3>
-          <p class="details">{product.details}</p>
-          <div class="product-actions"><strong>{money(product.price)}</strong>{action}</div>
-        </article>""")
-    status = ""
-    if added in cart:
-        status = f'<p class="notice" role="status">{CATALOG[added].name} · в корзине {cart[added]} шт.</p>'
+def home_page():
     return f"""<section class="hero" aria-labelledby="intro">
       <div class="hero-copy">
         <p class="variant">Бумага и канцелярия</p>
         <h1 id="intro">Место для идей</h1>
         <p>Блокноты, планеры и карандаши для повседневных записей.</p>
-        <a class="button primary" href="#catalog">Смотреть каталог <span aria-hidden="true">↓</span></a>
+        <a class="button primary" href="/catalog">Смотреть каталог <span aria-hidden="true">→</span></a>
       </div>
       <img src="/static/collection.png" alt="Зелёный и светлый блокноты с карандашом на столе" width="1536" height="1024">
     </section>
-    <section id="catalog" class="catalog" aria-labelledby="catalog-title">
-      <h2 id="catalog-title">Коллекция</h2>
-      {status}
+    <section id="catalog" class="home-collection" aria-labelledby="collection-title">
+      <h2 id="collection-title">Выбрать по задаче</h2>
+      <ul class="quick-links">
+        <li><a href="/products/notebook">Для заметок <span>{CATALOG["notebook"].name}</span></a></li>
+        <li><a href="/products/planner">Для планов <span>{CATALOG["planner"].name}</span></a></li>
+        <li><a href="/products/pencil">Для набросков <span>{CATALOG["pencil"].name}</span></a></li>
+      </ul>
+    </section>"""
+
+
+def add_button(sku, cart, source):
+    style = "primary" if source == "product" else "secondary"
+    if cart.get(sku, 0) >= LIMIT:
+        return f'<a class="button {style}" href="/cart">Перейти в корзину</a>'
+    return f"""<form action="/cart/add" method="post">
+      <input type="hidden" name="sku" value="{sku}">
+      <input type="hidden" name="source" value="{source}">
+      <button class="button {style}" aria-label="В корзину — {CATALOG[sku].name}">В корзину</button>
+    </form>"""
+
+
+def cart_notice(added, cart):
+    if added in cart:
+        return f'<p class="notice" role="status">{CATALOG[added].name} · в корзине {cart[added]} шт.</p>'
+    return ""
+
+
+def product_art(sku):
+    return f'<div class="product-art {sku}" aria-hidden="true"><span></span></div>'
+
+
+def catalog_page(cart, added):
+    cards = []
+    for sku, product in CATALOG.items():
+        cards.append(f"""<article class="product">
+          <a class="product-link" href="/products/{sku}">
+            {product_art(sku)}
+            <p class="variant">{product.variant}</p>
+            <h2>{product.name}</h2>
+          </a>
+          <p class="details">{product.details}</p>
+          <div class="product-actions"><strong>{money(product.price)}</strong>{add_button(sku, cart, "catalog")}</div>
+        </article>""")
+    return f"""<section class="catalog" aria-labelledby="catalog-title">
+      <h1 id="catalog-title">Каталог</h1>
+      {cart_notice(added, cart)}
       <div class="products">{"".join(cards)}</div>
     </section>"""
 
 
+def product_page(sku, cart, added):
+    product = CATALOG[sku]
+    specifications = "".join(
+        f"<div><dt>{label}</dt><dd>{value}</dd></div>" for label, value in product.specifications
+    )
+    return f"""<a class="back-link" href="/catalog">← К каталогу</a>
+    <article class="product-detail">
+      {product_art(sku)}
+      <div>
+        <h1>{product.name}</h1>
+        <p class="product-description">{product.description}</p>
+        <dl class="specifications">{specifications}</dl>
+        <div class="product-actions"><strong>{money(product.price)}</strong>{add_button(sku, cart, "product")}</div>
+        {cart_notice(added, cart) if added == sku else ""}
+      </div>
+    </article>"""
+
+
 def cart_page(cart, checkout_token, error="", customer="", email=""):
     status = f'<p class="notice error" role="alert">{escape(error)}</p>' if error else ""
-    heading = f'<a class="back-link" href="/#catalog">← К каталогу</a><h1>Корзина</h1>{status}'
+    heading = f'<a class="back-link" href="/catalog">← К каталогу</a><h1>Корзина</h1>{status}'
     if not cart:
-        return heading + '<div class="panel"><p>Корзина пока пуста.</p><a class="button primary" href="/#catalog">К покупкам</a></div>'
+        return heading + '<div class="panel"><p>Корзина пока пуста.</p><a class="button primary" href="/catalog">К покупкам</a></div>'
 
     items = []
     for sku, quantity in cart.items():
         product = CATALOG[sku]
         items.append(f"""<li class="cart-item">
-          <div><h2>{product.name}</h2><p class="details">{money(product.price)} за шт.</p></div>
+          <div><h2><a href="/products/{sku}">{product.name}</a></h2><p class="details">{money(product.price)} за шт.</p></div>
           <strong>{money(product.price * quantity)}</strong>
           <form method="post" action="/cart/update" class="quantity-form">
             <input type="hidden" name="sku" value="{sku}">
@@ -228,8 +288,9 @@ class ShopHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
-    def page(self, title, content, cart, status=HTTPStatus.OK, headers=()):
-        self.respond(status, "text/html; charset=utf-8", layout(title, content, sum(cart.values())).encode(), headers)
+    def page(self, title, content, cart, status=HTTPStatus.OK, headers=(), *, current=""):
+        body = layout(title, content, sum(cart.values()), current).encode()
+        self.respond(status, "text/html; charset=utf-8", body, headers)
 
     def show_cart(self, cart, error="", customer="", email=""):
         token = uuid4().hex
@@ -237,7 +298,7 @@ class ShopHandler(BaseHTTPRequestHandler):
         status = HTTPStatus.BAD_REQUEST if error else HTTPStatus.OK
         self.page(
             "Корзина", cart_page(cart, token, error, customer, email), cart, status,
-            (("Set-Cookie", cookie),),
+            (("Set-Cookie", cookie),), current="cart",
         )
 
     def redirect(self, location, cart):
@@ -257,11 +318,18 @@ class ShopHandler(BaseHTTPRequestHandler):
             return
 
         cart = self.cart()
+        added = parse_qs(url.query).get("added", [""])[0]
         if url.path == "/":
-            query = parse_qs(url.query)
-            self.page("Канцелярия", catalog_page(cart, query.get("added", [""])[0]), cart)
+            if added in CATALOG:
+                self.respond(HTTPStatus.FOUND, "text/plain", headers=(("Location", f"/catalog?added={added}"),))
+                return
+            self.page("Канцелярия", home_page(), cart, current="home")
+        elif url.path == "/catalog":
+            self.page("Каталог", catalog_page(cart, added), cart, current="catalog")
         elif url.path == "/cart":
             self.show_cart(cart)
+        elif url.path.startswith("/products/") and (sku := url.path.removeprefix("/products/")) in CATALOG:
+            self.page(CATALOG[sku].name, product_page(sku, cart, added), cart, current="product")
         else:
             self.page("Страница не найдена", '<h1>Страница не найдена</h1><a href="/">На главную</a>', cart, HTTPStatus.NOT_FOUND)
 
@@ -304,7 +372,8 @@ class ShopHandler(BaseHTTPRequestHandler):
             self.show_cart(cart, "Товар отсутствует в каталоге.")
         elif path == "/cart/add":
             cart[sku] = min(cart.get(sku, 0) + 1, LIMIT)
-            self.redirect(f"/?added={sku}#catalog", cart)
+            location = f"/products/{sku}" if form.get("source") == "product" else "/catalog"
+            self.redirect(f"{location}?added={sku}", cart)
         else:
             quantity = form.get("quantity", "")
             if sku not in cart or not re.fullmatch(r"[0-9]{1,2}", quantity) or int(quantity) > LIMIT:
@@ -343,7 +412,7 @@ class ShopHandler(BaseHTTPRequestHandler):
         self.page(
             "Заказ оформлен",
             f'<section class="panel confirmation"><h1>Заказ №{order_id} оформлен</h1>'
-            '<p>Демонстрационный заказ сохранён.</p><a class="button primary" href="/#catalog">Вернуться в каталог</a></section>',
+            '<p>Демонстрационный заказ сохранён.</p><a class="button primary" href="/catalog">Вернуться в каталог</a></section>',
             {}, HTTPStatus.CREATED, (("Set-Cookie", cookie),),
         )
 
